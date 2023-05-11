@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
 
 import "./style.scss";
 
@@ -13,9 +14,11 @@ import Img from "../../../components/lazyLoadImage/img.jsx";
 import PosterFallback from "../../../assets/no-poster.png";
 import { PlayIcon } from "../Playbtn";
 import VideoPopup from "../../../components/videoPopup/VideoPopup";
+import WatchNow from "../../../components/MoviePlayer/WatchNow";
 
 
 const DetailsBanner = ({ video, crew }) => {
+const [watchmovie, setWatchmovie] = useState(false);
 const [show, setShow] = useState(false);
 const [videoId, setVideoid] = useState(null);
 
@@ -30,12 +33,29 @@ const [videoId, setVideoid] = useState(null);
         const minutes = totalMinutes % 60;
         return `${hours}h${minutes > 0 ? ` ${minutes}m` : ""}`;
     };
-
+    let key;
+    video?.forEach(element => {
+       if(element?.type==="Trailer") 
+       {
+        key = element?.key;
+        return ; 
+    }
+    });
+    const navigate = useNavigate();
     return (
-        
-        <div className="detailsBanner">
-            {!loading ? (<>{!!data && (
-            <>
+        <>
+        {watchmovie && <>
+            <WatchNow/> 
+            <div style={{display: 'flex',
+   justifyContent: 'space-around', color:'white', fontSize: 'calc(.9em + 1vw)', padding:'auto',margin:'20px' }}>
+            <div style={{padding:'7px'}}>{data&&`${data.name || data.title}`}</div>
+            <button style={{padding:'7px', backgroundColor:'red', borderRadius:'5px', cursor:'pointer' }} onClick={()=>setWatchmovie(false)}>Back</button>
+            </div>
+            </>
+        }
+      {!watchmovie && (<div className="detailsBanner">
+         {!loading ? (<>{!!data && (
+             <>
             <div className="backdrop-img">
             <Img src={url.backdrop + data.backdrop_path}/>
             </div>
@@ -58,11 +78,11 @@ const [videoId, setVideoid] = useState(null);
                             <div className="raw">
                                 <CircleRating rating={data.vote_average.toFixed(1)}/>
                                 <div style={{display:"flex"}}>
-                                <div className="playbtn" onClick={()=>{setShow(true); setVideoid(video.key)}}>
+                                {key&&<div className="playbtn" onClick={()=>{setShow(true); setVideoid(key)}}>
                                     <PlayIcon/>
                                     <span className="text">Watch Trailer</span>
-                                </div>
-                                    <button className="watch">Watch Now</button>
+                                </div>}
+                                    <button className="watch" onClick={()=>{setWatchmovie(true)}}>Watch Now</button>
                                 </div>
                                 
                                 
@@ -166,7 +186,8 @@ const [videoId, setVideoid] = useState(null);
                     </ContentWrapper>
                 </div>
             )}
-        </div>
+        </div>)}
+            </>
     );
 };
 

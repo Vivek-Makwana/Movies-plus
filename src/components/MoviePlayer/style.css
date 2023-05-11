@@ -1,0 +1,13 @@
+.player {
+  display: flex;
+  margin: auto;
+  padding: 60px auto 0px auto;
+  align-items: center;
+  justify-content: center;
+}
+
+.video {
+  margin: 60px auto 0px auto;
+  width: 80%;
+  
+}

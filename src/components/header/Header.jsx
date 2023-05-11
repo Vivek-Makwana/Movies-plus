@@ -23,7 +23,6 @@ const Header = () => {
         window.scrollTo(0, 0);
     },[location])
   const controlNavbar = ()=>{
-    console.log(window.scrollY)
     if(window.scrollY > 200)
     {
       if(window.scrollY > lastScrollY && !mobileMenu)
@@ -82,7 +81,6 @@ const Header = () => {
             <ul className="menuItems">
               <li className="menuItem" onClick={()=>navigationHandler("movie")}>Movies</li>
               <li className="menuItem" onClick={()=>navigationHandler("tv")}>TV Shows</li>
-              {/* <li className="menuItem"><SlMenu/></li> */}
               <li className="menuItem" onClick={openSearch}><HiOutlineSearch/></li>
             </ul>
           <div className="mobileMenuItems">
@@ -93,11 +91,10 @@ const Header = () => {
           {showSearch && <div className="searchBar">
           <ContentWrapper>
           <div className="searchInput">
-              <input type="text" placeholder='Search for a movie of TV show' onChange={(e)=>{setQuery(e.target.value)}} onKeyUp={searchQueryHandler}/>
+              <input type="text" placeholder='Search for a movie or TV show' onChange={(e)=>{setQuery(e.target.value)}} onKeyUp={searchQueryHandler}/>
               <VscChromeClose onClick={()=>setShowSearch(false)} />
             </div>
           </ContentWrapper>
-          
           </div>}
         </header>
     );

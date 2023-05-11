@@ -17,11 +17,10 @@ import Genres from "../genres/Genres";
 
 const Carousel = ({data, loading, endpoint, title}) => {
     const carouselContainer = useRef();
-    const {url} = useSelector((state)=>{console.log("UseSel",state.home); return state.home;})
+    const {url} = useSelector((state)=>{return state.home;})
     const navigate = useNavigate();
     const navigation = (dir)=>{
         const container = carouselContainer.current;
-        console.log("This is slider", container.scrollTo)
         const scrollAmount = dir==="left" ? container.scrollLeft - (container.offsetWidth + 20) : container.scrollLeft + (container.offsetWidth + 20);
         container.scrollTo({
             left: scrollAmount,
